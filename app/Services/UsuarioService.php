@@ -47,4 +47,40 @@ class UsuarioService
             ];
         }
     }
+
+    /**
+     * @return array
+     */
+    public function listarUsuarios()
+    {
+        try {
+            $dados = Usuario::select([
+                'id',
+                'nome_usuario',
+                'status_usuario',
+                'cod_pessoa',
+                'login'
+            ])->get();
+
+            foreach ($dados as $dado) {
+                $dado->status_usuario = $dado->status_usuario == 'I' ? 'Inativo':  'Ativo';
+            }
+
+            return [
+                'success' => true,
+                'data'  => $dados,
+            ];
+
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
+
+            return [
+                'success' => false,
+                'data' => [
+                    $exception->getMessage(),
+                ],
+            ];
+        }
+    }
 }

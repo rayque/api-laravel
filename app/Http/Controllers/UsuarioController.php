@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Usuario;
 use App\Services\UsuarioService;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\This;
 
-class UsuarioController extends Controller
+class UsuarioController extends BaseController
 {
     /**
      * @var UsuarioService
@@ -16,13 +17,17 @@ class UsuarioController extends Controller
     public function __construct(UsuarioService $usuarioService)
     {
         $this->usuarioService = $usuarioService;
-
     }
 
     public function listar()
     {
-        dd("listar");
-        
+        $dados = $this->usuarioService->listarUsuarios();
+
+        if ($dados['success']) {
+            return $this->responseSuccess("Busca de usuaários realizada com sucesso!", $dados['data']);
+        }
+
+        return $this->responseError("Não foi possível buscar a lista de usuários!");
     }
 
     /**
