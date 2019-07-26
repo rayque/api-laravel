@@ -2,83 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PerfilService;
 use Illuminate\Http\Request;
 
-class PerfilController extends Controller
+class PerfilController extends BaseController
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @var PerfilService
      */
-    public function index()
+    private $perfilService;
+
+    public function __construct(PerfilService $perfilService)
     {
-        //
+        $this->perfilService = $perfilService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function listarPerfis()
     {
-        //
-    }
+        $dados = $this->perfilService->listarPerfis();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($dados['success']) {
+            return $this->responseSuccess("Busca de perfis realizada com sucesso!", $dados['data']);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return $this->responseError("Não foi possível buscar a lista de perfis!");
     }
 }

@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('nome_usuario', 60);
             $table->string('login', 30)->unique();
             $table->string('email', 60)->unique();
-            $table->string('senha', 45);
+            $table->string('senha', 255);
             $table->timestamp('data_creacao');
             $table->integer('tempo_expiracao_senha');
             $table->char('cod_autorizacao');

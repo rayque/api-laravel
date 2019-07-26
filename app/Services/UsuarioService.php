@@ -12,10 +12,6 @@ use Throwable;
 
 class UsuarioService
 {
-    public function __construct()
-    {
-    }
-
     public function store(Request $request)
     {
         try {
@@ -23,11 +19,11 @@ class UsuarioService
                 'nome_usuario' => $request->nome_usuario,
                 'email' => $request->email,
                 'login' => $request->login,
-                'senha' => $request->senha,
+                'senha' =>  bcrypt($request->senha),
                 'data_creacao' => Carbon::now()->format('Y-m-d'),
-                'tempo_expiracao_senha' => 9,
-                'cod_autorizacao' => 'R',
-                'status_usuario' => $request->status_usuario == 'A' ? 'A' : 'I',
+                'tempo_expiracao_senha' => $request->tempo_expiracao_senha,
+                'cod_autorizacao' => $request->cod_autorizacao,
+                'status_usuario' => $request->status_usuario == 'Ativo' ? 'A' : 'I',
                 'cod_pessoa' => $request->cod_pessoa,
             ];
 

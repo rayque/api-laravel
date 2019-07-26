@@ -24,21 +24,12 @@ class UsuarioController extends BaseController
         $dados = $this->usuarioService->listarUsuarios();
 
         if ($dados['success']) {
-            return $this->responseSuccess("Busca de usuaários realizada com sucesso!", $dados['data']);
+            return $this->responseSuccess("Busca de usuários realizada com sucesso!", $dados['data']);
         }
 
         return $this->responseError("Não foi possível buscar a lista de usuários!");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -50,17 +41,6 @@ class UsuarioController extends BaseController
     {
         $result = $this->usuarioService->store($request);
         dd($result);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

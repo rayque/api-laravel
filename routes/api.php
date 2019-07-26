@@ -22,6 +22,11 @@ Route::group(['prefix' => 'usuario/', 'name' => 'usuarios.'], function () {
     Route::get('listar', 'UsuarioController@listar')->name('listar');
     Route::post('store', 'UsuarioController@store')->name('store');
 });
-
+Route::group(['prefix' => 'perfil/', 'name' => 'perfis.'], function () {
+    Route::get('listar-perfis', 'PerfilController@listarPerfis')->name('listarPerfis');
+});
+Route::group(['prefix' => 'aparelho/', 'name' => 'aparelho.'], function () {
+    Route::get('listar-aparelhos', 'AparelhoController@listarAparelhos')->name('listarAparelhos');
+});
 
 
