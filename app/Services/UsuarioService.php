@@ -26,8 +26,21 @@ class UsuarioService
                 'status_usuario' => $request->status_usuario == 'Ativo' ? 'A' : 'I',
                 'cod_pessoa' => $request->cod_pessoa,
             ];
+            $usuario = Usuario::create($dados);
 
-            Usuario::create($dados);
+            $aparelhos = [];
+            foreach ($request->selected_aparelho ?? [] as $aparelho) {
+                $aparelhos[] = $aparelho['id'];
+            }
+
+            $perfis = [];
+            foreach ($request->selected_perfil  ?? []  as $perfil) {
+                $perfis[] = $perfil['id'];
+            }
+
+            $usuario->perfis()->attach($perfis);
+            $usuario->aparelhos()->attach($aparelhos);
+
             return [
                 'success' => true,
                 'message' => 'Usuário salvo com sucesso!',
@@ -59,7 +72,7 @@ class UsuarioService
             ])->get();
 
             foreach ($dados as $dado) {
-                $dado->status_usuario = $dado->status_usuario == 'I' ? 'Inativo':  'Ativo';
+                $dado->status_usuario = $dado->status_usuario == 'A' ? 'Ativo':  'Inativo';
             }
 
             return [
@@ -76,6 +89,94 @@ class UsuarioService
                 'data' => [
                     $exception->getMessage(),
                 ],
+            ];
+        }
+    }
+
+    public function destroy($usuarioId)
+    {
+        try {
+            $usuario = Usuario::find($usuarioId);
+            $usuario->delete();
+
+            return [
+                'success' => true,
+                'data' => [],
+            ];
+
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
+
+            return [
+                'success' => false,
+                'data' => [],
+            ];
+        }
+    }
+
+    public function getDados($id)
+    {
+        try {
+            $usuario = Usuario::find($id);
+
+            return [
+                'success' => true,
+                'data' => $usuario->toArray(),
+            ];
+
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
+
+            return [
+                'success' => false,
+                'data' => [],
+            ];
+        }
+    }
+
+    public function update($request)
+    {
+        try {
+            $usuario = Usuario::find($request->usuario_id);
+
+            $usuario->nome_usuario = $request->nome_usuario;
+            $usuario->email = $request->email;
+            $usuario->login = $request->login;
+            $usuario->senha = bcrypt($request->senha);
+            $usuario->tempo_expiracao_senha = $request->tempo_expiracao_senha;
+            $usuario->cod_autorizacao = $request->cod_autorizacao;
+            $usuario->status_usuario = $request->status_usuario == 'Ativo' ? 'A' : 'I';
+            $usuario->cod_pessoa = $request->cod_pessoa;
+
+            $usuario->save();
+
+            $aparelhos = [];
+            foreach ($request->selected_aparelho ?? [] as $aparelho) {
+                $aparelhos[] = $aparelho['id'];
+            }
+
+            $perfis = [];
+            foreach ($request->selected_perfil  ?? []  as $perfil) {
+                $perfis[] = $perfil['id'];
+            }
+
+            $usuario->perfis()->sync($perfis);
+            $usuario->aparelhos()->sync($aparelhos);
+
+            return [
+                'success' => true,
+                'data' => [],
+            ];
+
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
+
+            return [
+                'success' => false,
+                'data' => [],
             ];
         }
     }

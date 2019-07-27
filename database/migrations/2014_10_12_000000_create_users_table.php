@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->char('cod_autorizacao');
             $table->char('status_usuario');
             $table->integer('cod_pessoa');
+            $table->softDeletes();
         });
     }
 

@@ -30,50 +30,43 @@ class UsuarioController extends BaseController
         return $this->responseError("Não foi possível buscar a lista de usuários!");
     }
 
+    public function getDados($id)
+    {
+        $dados = $this->usuarioService->getDados($id);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+        if ($dados['success']) {
+            return $this->responseSuccess("Busca de dados do usuário realizada com sucesso!", $dados['data']);
+        }
+
+        return $this->responseError("Não foi possível buscar os dados do usuários!");
+        
+    }
+
     public function store(Request $request)
     {
-        $result = $this->usuarioService->store($request);
-        dd($result);
+        return $this->usuarioService->store($request);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function update(Request $request)
     {
-        //
+        $dados = $this->usuarioService->update($request);
+
+        if ($dados['success']) {
+            return $this->responseSuccess("Usuário atualizado com sucesso!", $dados['data']);
+        }
+
+        return $this->responseError("Não foi possível atualizar os dados do usuário!");
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Request $request)
     {
-        //
-    }
+        $dados = $this->usuarioService->destroy($request->usuario_id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($dados['success']) {
+            return $this->responseSuccess("Usuário excluído com sucesso!", $dados['data']);
+        }
+
+        return $this->responseError("Não foi possível excluir o usuário!");
     }
 }

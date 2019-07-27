@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Http\Request;
 
 /*
@@ -13,20 +14,20 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
 
-//Route::resource('usuario', 'UsuarioController');
-Route::group(['prefix' => 'usuario/', 'name' => 'usuarios.'], function () {
-    Route::get('listar', 'UsuarioController@listar')->name('listar');
-    Route::post('store', 'UsuarioController@store')->name('store');
+Route::group(['prefix' => 'usuario/',], function () {
+    Route::get('listar', 'UsuarioController@listar');
+    Route::post('store', 'UsuarioController@store');
+    Route::post('destroy', 'UsuarioController@destroy');
+    Route::post('update', 'UsuarioController@update');
+    Route::get('get-dados/{id}', 'UsuarioController@getDados');
 });
+
 Route::group(['prefix' => 'perfil/', 'name' => 'perfis.'], function () {
-    Route::get('listar-perfis', 'PerfilController@listarPerfis')->name('listarPerfis');
+    Route::get('listar-perfis', 'PerfilController@listarPerfis');
 });
 Route::group(['prefix' => 'aparelho/', 'name' => 'aparelho.'], function () {
-    Route::get('listar-aparelhos', 'AparelhoController@listarAparelhos')->name('listarAparelhos');
+    Route::get('listar-aparelhos', 'AparelhoController@listarAparelhos');
 });
 
 

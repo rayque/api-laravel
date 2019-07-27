@@ -22,7 +22,7 @@ class UsuariosSeeder extends Seeder
                 'nome_usuario' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'login' => $faker->unique()->userName,
-                'senha' => $faker->password,
+                'senha' => bcrypt($faker->password),
                 'data_creacao' => Carbon::now()->format('Y-m-d'),
                 'tempo_expiracao_senha' => $faker->randomNumber(1),
                 'cod_autorizacao' => $faker->randomLetter,
