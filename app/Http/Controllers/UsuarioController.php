@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+
 use App\Services\UsuarioService;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\This;
 
 class UsuarioController extends BaseController
 {
@@ -39,7 +38,7 @@ class UsuarioController extends BaseController
         }
 
         return $this->responseError("Não foi possível buscar os dados do usuários!");
-        
+
     }
 
     public function store(Request $request)
@@ -68,5 +67,10 @@ class UsuarioController extends BaseController
         }
 
         return $this->responseError("Não foi possível excluir o usuário!");
+    }
+
+    public function relatorio()
+    {
+        return $this->usuarioService->relatorio();
     }
 }

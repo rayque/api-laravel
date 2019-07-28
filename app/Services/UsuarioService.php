@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Usuario;
 use Carbon\Carbon;
+use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -68,7 +69,8 @@ class UsuarioService
                 'nome_usuario',
                 'status_usuario',
                 'cod_pessoa',
-                'login'
+                'login',
+                'email',
             ])->get();
 
             foreach ($dados as $dado) {
@@ -179,5 +181,37 @@ class UsuarioService
                 'data' => [],
             ];
         }
+    }
+
+    public function relatorio()
+    {
+        $pdf= new FPDF("P", "pt", "A4");
+        $pdf->AddPage();
+
+        $pdf->SetFont('arial', 'B', 18);
+        $pdf->Cell(0, 5, "Relatorio de Usuarios", 0, 1, 'C');
+        $pdf->Cell(0, 5, "", "B", 1, 'C');
+        $pdf->Ln(50);
+
+        $pdf->SetFont('arial', 'B', 14);
+        $pdf->Cell(95, 20, 'Cod. Pessoa', 1, 0, "C");
+        $pdf->Cell(165, 20, 'Nome ', 1, 0, "C");
+        $pdf->Cell(200, 20, 'Email', 1, 0, "C");
+        $pdf->Cell(65, 20, 'Registro', 1, 1, "C");
+
+        $pdf->SetFont('arial','',12);
+
+        $users = $this->listarUsuarios();
+
+        foreach ($users['data'] as $user){
+            $pdf->Cell(95, 20, $user->cod_pessoa, 1, 0, "C");
+            $pdf->Cell(165, 20, $user->nome_usuario, 1, 0, "L");
+            $pdf->Cell(200, 20, $user->email, 1, 0, "L");
+            $pdf->Cell(65, 20, $user->status_usuario , 1, 1, "L");
+        }
+
+        $nameFile = 'Relatorio-usuarios.pdf';
+        $pdf->Output($nameFile, 'F');
+        return response()->file($nameFile);
     }
 }

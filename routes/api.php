@@ -21,6 +21,7 @@ Route::group(['prefix' => 'usuario/',], function () {
     Route::post('destroy', 'UsuarioController@destroy');
     Route::post('update', 'UsuarioController@update');
     Route::get('get-dados/{id}', 'UsuarioController@getDados');
+    Route::get('relatorio', 'UsuarioController@relatorio');
 });
 
 Route::group(['prefix' => 'perfil/', 'name' => 'perfis.'], function () {

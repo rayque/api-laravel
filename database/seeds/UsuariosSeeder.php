@@ -29,6 +29,7 @@ class UsuariosSeeder extends Seeder
                 'status_usuario' => $faker->randomElement(['A', 'I']),
                 'cod_pessoa' => $faker->randomNumber(4),
             ];
+
             Usuario::create($dados);
         }
     }
