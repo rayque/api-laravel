@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
              UsuariosSeeder::class,
              PerfilSeeder::class,
              AparelhoSeeder::class,
-//             RelacionamentosSeeder::class,
+             RelacionamentosSeeder::class,
          ]);
     }
 }

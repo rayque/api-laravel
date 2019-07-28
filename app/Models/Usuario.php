@@ -15,11 +15,11 @@ class Usuario extends Model
 
     public function aparelhos()
     {
-        return $this->belongsToMany(Aparelho::class);
+        return $this->belongsToMany(Aparelho::class, 'aparelho_usuario', 'usuario_id', 'aparelho_id');
     }
 
     public function perfis()
     {
-        return $this->belongsToMany(Perfil::class);
+        return $this->belongsToMany(Perfil::class, 'perfil_usuario', 'usuario_id', 'perfil_id');
     }
 }

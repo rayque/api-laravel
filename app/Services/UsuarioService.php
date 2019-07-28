@@ -39,8 +39,8 @@ class UsuarioService
                 $perfis[] = $perfil['id'];
             }
 
-            $usuario->perfis()->attach($perfis);
-            $usuario->aparelhos()->attach($aparelhos);
+            $usuario->perfis()->sync($perfis);
+            $usuario->aparelhos()->sync($aparelhos);
 
             return [
                 'success' => true,
@@ -71,7 +71,7 @@ class UsuarioService
                 'cod_pessoa',
                 'login',
                 'email',
-            ])->get();
+            ])->orderBy('nome_usuario', 'asc')->get();;
 
             foreach ($dados as $dado) {
                 $dado->status_usuario = $dado->status_usuario == 'A' ? 'Ativo':  'Inativo';
@@ -121,10 +121,25 @@ class UsuarioService
     {
         try {
             $usuario = Usuario::find($id);
+            $dados = $usuario->toArray();
+
+            $dados['perfis']  = $usuario->perfis->map(function ($perfil) {
+                 return [
+                    'id' => $perfil->id,
+                    'nome' => $perfil->nome_perfil,
+                 ];
+            });
+
+            $dados['aparelhos']  = $usuario->aparelhos->map(function ($aparelho) {
+                return [
+                    'id' => $aparelho->id,
+                    'codigo_descricao' => $aparelho->codigo_aparelho . ' - ' .$aparelho->descricao_aparelho,
+                ];
+            });
 
             return [
                 'success' => true,
-                'data' => $usuario->toArray(),
+                'data' => $dados,
             ];
 
         } catch (Throwable $exception) {
@@ -154,14 +169,14 @@ class UsuarioService
 
             $usuario->save();
 
-            $aparelhos = [];
-            foreach ($request->selected_aparelho ?? [] as $aparelho) {
-                $aparelhos[] = $aparelho['id'];
-            }
-
             $perfis = [];
             foreach ($request->selected_perfil  ?? []  as $perfil) {
                 $perfis[] = $perfil['id'];
+            }
+
+            $aparelhos = [];
+            foreach ($request->selected_aparelho ?? [] as $aparelho) {
+                $aparelhos[] = $aparelho['id'];
             }
 
             $usuario->perfis()->sync($perfis);

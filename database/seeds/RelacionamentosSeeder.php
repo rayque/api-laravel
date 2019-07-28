@@ -19,8 +19,8 @@ class RelacionamentosSeeder extends Seeder
         $usuarios = Usuario::all();
 
         foreach ($usuarios as $usuario) {
-            $usuario->perfis()->attach($perfis);
-            $usuario->aparelhos()->attach($aparelhos);
+            $usuario->perfis()->sync($perfis);
+            $usuario->aparelhos()->sync($aparelhos);
         }
 
 

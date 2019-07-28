@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('senha', 255);
             $table->timestamp('data_creacao');
             $table->integer('tempo_expiracao_senha');
-            $table->char('cod_autorizacao');
+            $table->string('cod_autorizacao', 1);
             $table->string('status_usuario', 1);
             $table->integer('cod_pessoa');
             $table->softDeletes();

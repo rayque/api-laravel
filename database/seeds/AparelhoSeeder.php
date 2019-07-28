@@ -15,14 +15,7 @@ class AparelhoSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-
-        foreach (range(1, 10) as $i) {
-            $dados = [
-                'descricao_aparelho' => $faker->text(10),
-                'codigo_aparelho' => $faker->randomNumber(5),
-            ];
-            Aparelho::create($dados);
-        }
+        Aparelho::create(['descricao_aparelho' => 'IPhone 10', 'codigo_aparelho' => '123']);
+        Aparelho::create(['descricao_aparelho' => 'S10', 'codigo_aparelho' => '456']);
     }
 }
